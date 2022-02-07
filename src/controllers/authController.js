@@ -19,7 +19,7 @@ export async function login(req, res) {
           token
         })
 
-         res.status(200).send({
+        res.status(200).send({
           name: participant.name,
           token
         })
@@ -32,7 +32,26 @@ export async function login(req, res) {
     } else {
       res.status(401).send("user does not exists");
     }
-  } catch (err) {
-    res.status(500).send(err.message);
+  } catch(err) {
+    res.status(500).send(err);
   }
+}
+
+export async function register(req, res) {
+    const user = req.body;
+
+    try {
+      const participant = await db.collection("users-db").findOne( { email: user.email } );
+      
+      if (participant) return res.status(409).send("user already registered");
+
+      await db.collection("users-db").insertOne({
+        ...user,
+        password: bcrypt.hashSync(user.password, 10)
+      });
+
+      res.sendStatus(201);
+    } catch(err) {
+      res.status(500).send(err);
+    }
 }
