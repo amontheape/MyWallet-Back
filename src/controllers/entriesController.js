@@ -36,9 +36,9 @@ export async function getHistory(req, res) {
     })
 
     balance = balance.toFixed(2).replace('.', ',');
-
     res.status(200).send({history, balance});
   } catch(err) {
+    console.log(err);
     res.status(500).send(err);
   }
 }

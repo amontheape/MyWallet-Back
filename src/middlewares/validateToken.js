@@ -18,6 +18,6 @@ export default async function validateToken(req, res, next) {
     return res.sendStatus(401);
   }
 
-  res.locals.user = user;
+  res.locals.session = session;
   next();
 }
